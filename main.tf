@@ -12,7 +12,7 @@ data "aws_availability_zones" "available" {
   state = "available"
 }
 
-module "vpc" {
+module "learn_vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "3.14.4"
 
@@ -33,7 +33,7 @@ module "web_security_group" {
   source = "terraform-aws-modules/security-group/aws"
   version = "4.13.0"
   
-  vpc_id = module.vpc.vpc_id
+  vpc_id = module.learn_vpc.vpc_id
   
   use_name_prefix = false
   
@@ -62,7 +62,7 @@ module "web_security_group" {
 module "ec2_instance" {
   source = "./modules/compute"
   security_group = module.web_security_group.security_group_id
-  public_subnets = module.vpc.public_subnets
+  public_subnets = module.learn_vpc.public_subnets
 }
 
 moved {
@@ -83,4 +83,9 @@ moved {
 moved {
   from = aws_instance.example
   to   = module.ec2_instance.aws_instance.example
+}
+
+moved {
+  from = module.vpc
+  to   = module.learn_vpc
 }
