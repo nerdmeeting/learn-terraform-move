@@ -1,3 +1,8 @@
+variable "project_version" {
+  description = "Version of the project"
+  type = string
+  default = "0.1.0"
+}
 
 variable "region" {
   default     = "us-east-2"
